@@ -1,7 +1,9 @@
 package pro.sky.calculator.dto;
 
+import java.math.BigDecimal;
+
 public record CalculatorDto(
-        String num1,
-        String num2
+        BigDecimal num1,
+        BigDecimal num2
 ) {
 }
