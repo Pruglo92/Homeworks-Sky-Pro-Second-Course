@@ -18,7 +18,7 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Value("${very.important.constant}")
-    private Integer SIZE_ARRAY;
+    private Integer SIZE_ARRAY; //допустим, что наш лист имеет ограниченный размер.
 
     @Override
     public EmployeeDto addEmployee(EmployeeDto employee) {

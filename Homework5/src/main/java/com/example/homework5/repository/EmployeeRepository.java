@@ -10,9 +10,7 @@ import java.util.List;
 @Repository
 public class EmployeeRepository {
 
-    @Value("${very.important.constant}")
-    private static final Integer SIZE_ARRAY = 20; //допустим, что наш лист имеет ограниченный размер.
-    public final static List<EmployeeDto> employees = new ArrayList<>(SIZE_ARRAY);
+    public final static List<EmployeeDto> employees = new ArrayList<>();
 
     static {
         employees.addAll(List.of(
