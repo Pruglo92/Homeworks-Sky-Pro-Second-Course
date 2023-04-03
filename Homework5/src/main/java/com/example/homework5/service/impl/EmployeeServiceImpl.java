@@ -21,7 +21,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     private Integer SIZE_ARRAY; //допустим, что наш лист имеет ограниченный размер.
 
     @Override
-    public EmployeeDto addEmployee(EmployeeDto employee) {
+    public EmployeeDto addEmployee(String firstName, String lastName) {
+        var employee = new EmployeeDto(firstName, lastName);
         if (EmployeeRepository.employees.contains(employee)) {
             throw new EmployeeAlreadyAddedException("Данный сотрудник уже добавлен.");
         }
@@ -33,20 +34,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDto getEmployee(EmployeeDto employee) {
+    public EmployeeDto getEmployee(String firstName, String lastName) {
         return EmployeeRepository.employees.stream()
-                .filter(employee::equals)
+                .filter(new EmployeeDto(firstName, lastName)::equals)
                 .findAny()
                 .orElseThrow(() -> new EmployeeNotFoundException("Данный сотрудник не найден."));
 
     }
 
     @Override
-    public EmployeeDto deleteEmployee(EmployeeDto employee) {
-        if (!EmployeeRepository.employees.remove(employee)) {
+    public EmployeeDto deleteEmployee(String firstName, String lastName) {
+        if (!EmployeeRepository.employees.remove(new EmployeeDto(firstName, lastName))) {
             throw new EmployeeNotFoundException("Данный сотрудник не найден.");
         }
-        return employee;
+        return new EmployeeDto(firstName, lastName);
     }
 
     @Override

@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface EmployeeService {
 
-    EmployeeDto addEmployee(EmployeeDto employee);
+    EmployeeDto addEmployee(String firstName, String lastName);
 
-    EmployeeDto getEmployee(EmployeeDto employee);
+    EmployeeDto getEmployee(String firstName, String lastName);
 
-    EmployeeDto deleteEmployee(EmployeeDto employee);
+    EmployeeDto deleteEmployee(String firstName, String lastName);
 
     List<EmployeeDto> getAllEmployee();
 }
