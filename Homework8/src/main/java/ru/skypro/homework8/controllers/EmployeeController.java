@@ -7,36 +7,40 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.skypro.homework8.entity.Employee;
 import ru.skypro.homework8.service.EmployeeService;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/departments")
+@RequestMapping(value = "/employee")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-
-    private EmployeeController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
-    @GetMapping(value = "/max-salary")
-    public Employee getEmployeeWithMaxSalary(@RequestParam Integer departmentId) {
-        return employeeService.getEmployeeWithMaxSalary(departmentId);
+    @GetMapping(value = "/add")
+    public Employee addEmployee(@RequestParam String firstName,
+                                @RequestParam String lastName,
+                                @RequestParam Integer department,
+                                @RequestParam Integer salary) {
+        return employeeService.addEmployee(firstName, lastName, department, salary);
     }
 
-    @GetMapping(value = "/min-salary")
-    public Employee getEmployeeWithMinSalary(@RequestParam Integer departmentId) {
-        return employeeService.getEmployeeWithMinSalary(departmentId);
+    @GetMapping(value = "/find")
+    public Employee findEmployee(@RequestParam String firstName,
+                                 @RequestParam String lastName) {
+        return employeeService.getEmployee(firstName, lastName);
     }
 
-    @GetMapping(value = "/all")
-    public Map<Integer, List<Employee>> getAllEmployeesOfTheDepartment(Integer departmentId) {
-        if (departmentId == null) {
-            return employeeService.getAllEmployeesByAllDepartment();
-        } else {
-            return employeeService.getAllEmployeesOfTheDepartment(departmentId);
-        }
+    @GetMapping(value = "/remove")
+    public Employee removeEmployee(@RequestParam String firstName,
+                                   @RequestParam String lastName) {
+        return employeeService.deleteEmployee(firstName, lastName);
+    }
+
+    @GetMapping(value = "/findAll")
+    public Map<Integer, Employee> findAllEmployee() {
+        return employeeService.getAllEmployee();
     }
 }
