@@ -2,16 +2,15 @@ package ru.skypro.homework8.service;
 
 import ru.skypro.homework8.entity.Employee;
 
-import java.util.List;
 import java.util.Map;
 
 public interface EmployeeService {
 
-    Employee getEmployeeWithMinSalary(int department);
+    Employee addEmployee(String firstName, String lastName, Integer department, Integer salary);
 
-    Employee getEmployeeWithMaxSalary(Integer department);
+    Employee getEmployee(String firstName, String lastName);
 
-    Map<Integer, List<Employee>> getAllEmployeesOfTheDepartment(int department);
+    Employee deleteEmployee(String firstName, String lastName);
 
-    Map<Integer, List<Employee>> getAllEmployeesByAllDepartment();
+    Map<Integer, Employee> getAllEmployee();
 }
