@@ -3,9 +3,7 @@ package ru.skypro.homework8.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import ru.skypro.homework8.exceptions.employeeExceptions.EmployeeAlreadyAddedException;
-import ru.skypro.homework8.exceptions.employeeExceptions.EmployeeNotFoundException;
-import ru.skypro.homework8.exceptions.employeeExceptions.EmployeeStorageIsFullException;
+import ru.skypro.homework8.exceptions.employeeExceptions.*;
 
 @ControllerAdvice
 public class ExceptionHandler {
@@ -37,6 +35,18 @@ public class ExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(SalaryNegativeException.class)
     public ResponseEntity<String> salaryNegativeExceptionHandler(SalaryNegativeException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(e.getMessage());
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(EmployeeIncorrectFirstNameException.class)
+    public ResponseEntity<String> employeeIncorrectFirstNameExceptionHandler(EmployeeIncorrectFirstNameException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(e.getMessage());
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(EmployeeIncorrectLastNameException.class)
+    public ResponseEntity<String> employeeIncorrectLastNameExceptionHandler(EmployeeIncorrectLastNameException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(e.getMessage());
     }
 }
