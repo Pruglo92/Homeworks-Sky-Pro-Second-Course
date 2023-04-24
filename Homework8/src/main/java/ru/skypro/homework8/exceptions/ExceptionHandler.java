@@ -28,13 +28,13 @@ public class ExceptionHandler {
                 .body(e.getMessage());
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler
+    @org.springframework.web.bind.annotation.ExceptionHandler(DepartmentIntervalException.class)
     public ResponseEntity<String> departmentIntervalExceptionHandler(DepartmentIntervalException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(e.getMessage());
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler
+    @org.springframework.web.bind.annotation.ExceptionHandler(SalaryNegativeException.class)
     public ResponseEntity<String> salaryNegativeExceptionHandler(SalaryNegativeException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(e.getMessage());
