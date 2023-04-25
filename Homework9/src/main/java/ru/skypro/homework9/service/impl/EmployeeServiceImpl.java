@@ -18,14 +18,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override   // добавляем сотрудника
     public Employee addEmployee(String firstName, String lastName, Integer department, Integer salary) {
-        if (!StringUtils.isAlpha(firstName)) {
+        if (!StringUtils.isAlpha(firstName.trim())) {
             throw new EmployeeIncorrectFirstNameException("Некорректное имя сотрудника.");
         }
-        if (!StringUtils.isAlpha(lastName)) {
+        if (!StringUtils.isAlpha(lastName.trim())) {
             throw new EmployeeIncorrectLastNameException("Некорректная фамилия сотрудника.");
         }
-        var employee = new Employee(StringUtils.capitalize(firstName),
-                StringUtils.capitalize(lastName), department, salary);
+        var employee = new Employee(StringUtils.capitalize(firstName.trim()),
+                StringUtils.capitalize(lastName.trim()), department, salary);
         if (EmployeeRepository.employees.containsValue(employee)) {
             throw new EmployeeAlreadyAddedException("Данный сотрудник уже добавлен.");
         }
