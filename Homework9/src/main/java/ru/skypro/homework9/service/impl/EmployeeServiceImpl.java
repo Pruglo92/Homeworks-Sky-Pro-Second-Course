@@ -24,8 +24,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (!StringUtils.isAlpha(lastName.trim())) {
             throw new EmployeeIncorrectLastNameException("Некорректная фамилия сотрудника.");
         }
-        var employee = new Employee(StringUtils.capitalize(firstName.trim()),
-                StringUtils.capitalize(lastName.trim()), department, salary);
+        var employee = new Employee(StringUtils.capitalize(firstName.trim().toLowerCase()),
+                StringUtils.capitalize(lastName.trim().toLowerCase()), department, salary);
         if (EmployeeRepository.employees.containsValue(employee)) {
             throw new EmployeeAlreadyAddedException("Данный сотрудник уже добавлен.");
         }
