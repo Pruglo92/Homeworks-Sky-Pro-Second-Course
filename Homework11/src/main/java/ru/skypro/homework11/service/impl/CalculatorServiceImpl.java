@@ -65,7 +65,7 @@ public class CalculatorServiceImpl implements CalculatorService {
         return string;
     }
 
-    private boolean checkParameters(CalculatorDto dto) {
+    public boolean checkParameters(CalculatorDto dto) {
         return dto.num1() == null || dto.num2() == null;
     }
 }

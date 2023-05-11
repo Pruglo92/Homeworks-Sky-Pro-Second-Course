@@ -12,4 +12,6 @@ public interface CalculatorService {
     String getDivision(CalculatorDto dto);
 
     String binaryToString(String strings);
+
+    boolean checkParameters(CalculatorDto dto);
 }

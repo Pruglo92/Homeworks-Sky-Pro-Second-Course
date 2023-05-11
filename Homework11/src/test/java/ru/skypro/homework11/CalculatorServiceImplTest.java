@@ -9,8 +9,7 @@ import ru.skypro.homework11.service.impl.CalculatorServiceImpl;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CalculatorServiceImplTest {
 
@@ -20,6 +19,9 @@ public class CalculatorServiceImplTest {
     CalculatorDto firstNegativeSecondPositiveParamDto;
     CalculatorDto firstPositiveSecondNegativeParamDto;
     CalculatorDto firstPositiveSecondNullParamDto;
+    CalculatorDto bothMissingParamDto;
+    CalculatorDto firstPresentSecondMissingParamDto;
+    CalculatorDto firstMissingSecondPresentParamDto;
 
     @BeforeEach
     void init() {
@@ -29,6 +31,10 @@ public class CalculatorServiceImplTest {
         firstNegativeSecondPositiveParamDto = new CalculatorDto(new BigDecimal(-7), new BigDecimal(7));
         firstPositiveSecondNegativeParamDto = new CalculatorDto(new BigDecimal(7), new BigDecimal(-7));
         firstPositiveSecondNullParamDto = new CalculatorDto(new BigDecimal(7), new BigDecimal(0));
+        firstPresentSecondMissingParamDto = new CalculatorDto(new BigDecimal(1), null);
+        firstMissingSecondPresentParamDto = new CalculatorDto(null, new BigDecimal(1));
+        bothMissingParamDto = new CalculatorDto(null, null);
+
     }
 
 
@@ -134,5 +140,29 @@ public class CalculatorServiceImplTest {
                 calculatorService.getDivision(firstPositiveSecondNullParamDto)
         );
         assertEquals(illegalArgumentException.getMessage(), "Делить на ноль нельзя !");
+    }
+
+    @Test
+    void checkParametersFirstPresentSecondMissing() {
+        var result = calculatorService.checkParameters(firstPresentSecondMissingParamDto);
+        assertTrue(result);
+    }
+
+    @Test
+    void checkParametersFirstMissingSecondPresent() {
+        var result = calculatorService.checkParameters(firstMissingSecondPresentParamDto);
+        assertTrue(result);
+    }
+
+    @Test
+    void checkParametersFirstMissingSecondMissing() {
+        var result = calculatorService.checkParameters(bothMissingParamDto);
+        assertTrue(result);
+    }
+
+    @Test
+    void checkParametersFirstPresentSecondPresent() {
+        var result = calculatorService.checkParameters(bothPositiveParamDto);
+        assertFalse(result);
     }
 }
