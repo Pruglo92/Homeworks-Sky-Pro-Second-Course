@@ -1,6 +1,6 @@
 package ru.skypro.homework11;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.skypro.homework11.dto.CalculatorDto;
 import ru.skypro.homework11.exceptions.IllegalArgumentException;
@@ -13,18 +13,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CalculatorServiceImplTest {
 
-    CalculatorService calculatorService;
-    CalculatorDto bothPositiveParamDto;
-    CalculatorDto bothNegativeParamDto;
-    CalculatorDto firstNegativeSecondPositiveParamDto;
-    CalculatorDto firstPositiveSecondNegativeParamDto;
-    CalculatorDto firstPositiveSecondNullParamDto;
-    CalculatorDto bothMissingParamDto;
-    CalculatorDto firstPresentSecondMissingParamDto;
-    CalculatorDto firstMissingSecondPresentParamDto;
+    private static CalculatorService calculatorService;
+    private static CalculatorDto bothPositiveParamDto;
+    private static CalculatorDto bothNegativeParamDto;
+    private static CalculatorDto firstNegativeSecondPositiveParamDto;
+    private static CalculatorDto firstPositiveSecondNegativeParamDto;
+    private static CalculatorDto firstPositiveSecondNullParamDto;
+    private static CalculatorDto bothMissingParamDto;
+    private static CalculatorDto firstPresentSecondMissingParamDto;
+    private static CalculatorDto firstMissingSecondPresentParamDto;
 
-    @BeforeEach
-    void init() {
+    @BeforeAll
+    static void init() {
         calculatorService = new CalculatorServiceImpl();
         bothPositiveParamDto = new CalculatorDto(new BigDecimal(7), new BigDecimal(7));
         bothNegativeParamDto = new CalculatorDto(new BigDecimal(-7), new BigDecimal(-7));
@@ -34,7 +34,6 @@ public class CalculatorServiceImplTest {
         firstPresentSecondMissingParamDto = new CalculatorDto(new BigDecimal(1), null);
         firstMissingSecondPresentParamDto = new CalculatorDto(null, new BigDecimal(1));
         bothMissingParamDto = new CalculatorDto(null, null);
-
     }
 
 
