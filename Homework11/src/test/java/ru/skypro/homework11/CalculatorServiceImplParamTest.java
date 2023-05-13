@@ -9,6 +9,7 @@ import ru.skypro.homework11.service.CalculatorService;
 import ru.skypro.homework11.service.impl.CalculatorServiceImpl;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,10 +28,10 @@ public class CalculatorServiceImplParamTest {
     @BeforeAll
     static void init() {
         calculatorService = new CalculatorServiceImpl();
-        bothPositiveParamDto = new CalculatorDto(new BigDecimal(7), new BigDecimal(7));
-        bothNegativeParamDto = new CalculatorDto(new BigDecimal(-7), new BigDecimal(-7));
-        firstNegativeSecondPositiveParamDto = new CalculatorDto(new BigDecimal(-7), new BigDecimal(7));
-        firstPositiveSecondNegativeParamDto = new CalculatorDto(new BigDecimal(7), new BigDecimal(-7));
+        bothPositiveParamDto = new CalculatorDto(BigDecimal.valueOf(7.4), BigDecimal.valueOf(7.2));
+        bothNegativeParamDto = new CalculatorDto(BigDecimal.valueOf(-7.4), BigDecimal.valueOf(-7.2));
+        firstNegativeSecondPositiveParamDto = new CalculatorDto(BigDecimal.valueOf(-7.4), BigDecimal.valueOf(7.2));
+        firstPositiveSecondNegativeParamDto = new CalculatorDto(BigDecimal.valueOf(7.4), BigDecimal.valueOf(-7.2));
         firstPresentSecondMissingParamDto = new CalculatorDto(new BigDecimal(1), null);
         firstMissingSecondPresentParamDto = new CalculatorDto(null, new BigDecimal(1));
         bothMissingParamDto = new CalculatorDto(null, null);
@@ -58,42 +59,28 @@ public class CalculatorServiceImplParamTest {
     @MethodSource("provideParamsForBasicCalculatorTests")
     void getAdditionParamTest(CalculatorDto dto) {
         var result = calculatorService.getAddition(dto);
-        if (dto.num1().intValue() > 0 && dto.num2().intValue() > 0) {
-            assertEquals(result, "14");
-        } else if (dto.num1().intValue() < 0 && dto.num2().intValue() < 0) {
-            assertEquals(result, "-14");
-        } else assertEquals(result, "0");
+        assertEquals(result, String.format("%.2f", (dto.num1().add(dto.num2()))));
     }
 
     @ParameterizedTest
     @MethodSource("provideParamsForBasicCalculatorTests")
     void getSubtractionParamTest(CalculatorDto dto) {
         var result = calculatorService.getSubtraction(dto);
-        if (dto.num1().intValue() > 0 && dto.num2().intValue() < 0) {
-            assertEquals(result, "14");
-        } else if (dto.num1().intValue() < 0 && dto.num2().intValue() > 0) {
-            assertEquals(result, "-14");
-        } else assertEquals(result, "0");
+        assertEquals(result, String.format("%.2f", (dto.num1().subtract(dto.num2()))));
     }
 
     @ParameterizedTest
     @MethodSource("provideParamsForBasicCalculatorTests")
     void getMultiplicationParamTest(CalculatorDto dto) {
         var result = calculatorService.getMultiplication(dto);
-        if ((dto.num1().intValue() > 0 && dto.num2().intValue() > 0) ||
-                (dto.num1().intValue() < 0 && dto.num2().intValue() < 0)) {
-            assertEquals(result, "49");
-        } else assertEquals(result, "-49");
+        assertEquals(result, String.format("%.2f", (dto.num1().multiply(dto.num2()))));
     }
 
     @ParameterizedTest
     @MethodSource("provideParamsForBasicCalculatorTests")
     void getDivisionParamTest(CalculatorDto dto) {
         var result = calculatorService.getDivision(dto);
-        if ((dto.num1().intValue() > 0 && dto.num2().intValue() > 0) ||
-                (dto.num1().intValue() < 0 && dto.num2().intValue() < 0)) {
-            assertEquals(result, "1");
-        } else assertEquals(result, "-1");
+        assertEquals(result, String.format("%.2f", (dto.num1().divide(dto.num2(), 2, RoundingMode.DOWN))));
     }
 
     @ParameterizedTest

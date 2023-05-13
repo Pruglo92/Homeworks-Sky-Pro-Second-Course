@@ -26,10 +26,10 @@ public class CalculatorServiceImplTest {
     @BeforeAll
     static void init() {
         calculatorService = new CalculatorServiceImpl();
-        bothPositiveParamDto = new CalculatorDto(new BigDecimal(7), new BigDecimal(7));
-        bothNegativeParamDto = new CalculatorDto(new BigDecimal(-7), new BigDecimal(-7));
-        firstNegativeSecondPositiveParamDto = new CalculatorDto(new BigDecimal(-7), new BigDecimal(7));
-        firstPositiveSecondNegativeParamDto = new CalculatorDto(new BigDecimal(7), new BigDecimal(-7));
+        bothPositiveParamDto = new CalculatorDto(BigDecimal.valueOf(7.4), BigDecimal.valueOf(7.2));
+        bothNegativeParamDto = new CalculatorDto(BigDecimal.valueOf(-7.4), BigDecimal.valueOf(-7.2));
+        firstNegativeSecondPositiveParamDto = new CalculatorDto(BigDecimal.valueOf(-7.4), BigDecimal.valueOf(7.2));
+        firstPositiveSecondNegativeParamDto = new CalculatorDto(BigDecimal.valueOf(7.4), BigDecimal.valueOf(-7.2));
         firstPositiveSecondNullParamDto = new CalculatorDto(new BigDecimal(7), new BigDecimal(0));
         firstPresentSecondMissingParamDto = new CalculatorDto(new BigDecimal(1), null);
         firstMissingSecondPresentParamDto = new CalculatorDto(null, new BigDecimal(1));
@@ -38,103 +38,103 @@ public class CalculatorServiceImplTest {
 
 
     @Test
-    void getAdditionPositiveFirstAndSecond() {
+    void getAdditionPositiveFirstAndSecondTest() {
         var result = calculatorService.getAddition(bothPositiveParamDto);
-        assertEquals(result, "14");
+        assertEquals(result, "14,60");
     }
 
     @Test
-    void getAdditionNegativeFirstAndSecond() {
+    void getAdditionNegativeFirstAndSecondTest() {
         var result = calculatorService.getAddition(bothNegativeParamDto);
-        assertEquals(result, "-14");
+        assertEquals(result, "-14,60");
     }
 
     @Test
-    void getAdditionFirstPositiveSecondNegative() {
+    void getAdditionFirstPositiveSecondNegativeTest() {
         var result = calculatorService.getAddition(firstPositiveSecondNegativeParamDto);
-        assertEquals(result, "0");
+        assertEquals(result, "0,20");
     }
 
     @Test
-    void getAdditionFirstNegativeSecondPositive() {
+    void getAdditionFirstNegativeSecondPositiveTest() {
         var result = calculatorService.getAddition(firstNegativeSecondPositiveParamDto);
-        assertEquals(result, "0");
+        assertEquals(result, "-0,20");
     }
 
     @Test
-    void getSubtractionPositiveFirstAndSecond() {
+    void getSubtractionPositiveFirstAndSecondTest() {
         var result = calculatorService.getSubtraction(bothPositiveParamDto);
-        assertEquals(result, "0");
+        assertEquals(result, "0,20");
     }
 
     @Test
-    void getSubtractionNegativeFirstAndSecond() {
+    void getSubtractionNegativeFirstAndSecondTest() {
         var result = calculatorService.getSubtraction(bothNegativeParamDto);
-        assertEquals(result, "0");
+        assertEquals(result, "-0,20");
     }
 
     @Test
-    void getSubtractionFirstPositiveSecondNegative() {
+    void getSubtractionFirstPositiveSecondNegativeTest() {
         var result = calculatorService.getSubtraction(firstPositiveSecondNegativeParamDto);
-        assertEquals(result, "14");
+        assertEquals(result, "14,60");
     }
 
     @Test
-    void getSubtractionFirstNegativeSecondPositive() {
+    void getSubtractionFirstNegativeSecondPositiveTest() {
         var result = calculatorService.getSubtraction(firstNegativeSecondPositiveParamDto);
-        assertEquals(result, "-14");
+        assertEquals(result, "-14,60");
     }
 
     @Test
-    void getMultiplicationPositiveFirstAndSecond() {
+    void getMultiplicationPositiveFirstAndSecondTest() {
         var result = calculatorService.getMultiplication(bothPositiveParamDto);
-        assertEquals(result, "49");
+        assertEquals(result, "53,28");
     }
 
     @Test
-    void getMultiplicationNegativeFirstAndSecond() {
+    void getMultiplicationNegativeFirstAndSecondTest() {
         var result = calculatorService.getMultiplication(bothNegativeParamDto);
-        assertEquals(result, "49");
+        assertEquals(result, "53,28");
     }
 
     @Test
-    void getMultiplicationFirstPositiveSecondNegative() {
+    void getMultiplicationFirstPositiveSecondNegativeTest() {
         var result = calculatorService.getMultiplication(firstPositiveSecondNegativeParamDto);
-        assertEquals(result, "-49");
+        assertEquals(result, "-53,28");
     }
 
     @Test
-    void getMultiplicationFirstNegativeSecondPositive() {
+    void getMultiplicationFirstNegativeSecondPositiveTest() {
         var result = calculatorService.getMultiplication(firstNegativeSecondPositiveParamDto);
-        assertEquals(result, "-49");
+        assertEquals(result, "-53,28");
     }
 
     @Test
-    void getDivisionPositiveFirstAndSecond() {
+    void getDivisionPositiveFirstAndSecondTest() {
         var result = calculatorService.getDivision(bothPositiveParamDto);
-        assertEquals(result, "1");
+        assertEquals(result, "1,02");
     }
 
     @Test
-    void getDivisionNegativeFirstAndSecond() {
+    void getDivisionNegativeFirstAndSecondTest() {
         var result = calculatorService.getDivision(bothNegativeParamDto);
-        assertEquals(result, "1");
+        assertEquals(result, "1,02");
     }
 
     @Test
-    void getDivisionFirstPositiveSecondNegative() {
+    void getDivisionFirstPositiveSecondNegativeTest() {
         var result = calculatorService.getDivision(firstPositiveSecondNegativeParamDto);
-        assertEquals(result, "-1");
+        assertEquals(result, "-1,02");
     }
 
     @Test
-    void getDivisionFirstNegativeSecondPositive() {
+    void getDivisionFirstNegativeSecondPositiveTest() {
         var result = calculatorService.getDivision(firstNegativeSecondPositiveParamDto);
-        assertEquals(result, "-1");
+        assertEquals(result, "-1,02");
     }
 
     @Test
-    void getDivisionFirstPositiveSecondNull() {
+    void getDivisionFirstPositiveSecondNullTest() {
         var illegalArgumentException = assertThrows(IllegalArgumentException.class, () ->
                 calculatorService.getDivision(firstPositiveSecondNullParamDto)
         );
@@ -142,25 +142,25 @@ public class CalculatorServiceImplTest {
     }
 
     @Test
-    void checkParametersFirstPresentSecondMissing() {
+    void checkParametersFirstPresentSecondMissingTest() {
         var result = calculatorService.checkParameters(firstPresentSecondMissingParamDto);
         assertTrue(result);
     }
 
     @Test
-    void checkParametersFirstMissingSecondPresent() {
+    void checkParametersFirstMissingSecondPresentTest() {
         var result = calculatorService.checkParameters(firstMissingSecondPresentParamDto);
         assertTrue(result);
     }
 
     @Test
-    void checkParametersFirstMissingSecondMissing() {
+    void checkParametersFirstMissingSecondMissingTest() {
         var result = calculatorService.checkParameters(bothMissingParamDto);
         assertTrue(result);
     }
 
     @Test
-    void checkParametersFirstPresentSecondPresent() {
+    void checkParametersFirstPresentSecondPresentTest() {
         var result = calculatorService.checkParameters(bothPositiveParamDto);
         assertFalse(result);
     }

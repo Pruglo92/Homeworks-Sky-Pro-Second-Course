@@ -17,8 +17,7 @@ public class CalculatorServiceImpl implements CalculatorService {
         if (checkParameters(dto)) {
             return "Отсутствует один или несколько параметров.";
         }
-        return removeZerosAfterDecimalPoint(String.format
-                ("%.2f", (dto.num1().add(dto.num2()))));
+        return String.format("%.2f", (dto.num1().add(dto.num2())));
     }
 
     @Override
@@ -26,8 +25,7 @@ public class CalculatorServiceImpl implements CalculatorService {
         if (checkParameters(dto)) {
             return "Отсутствует один или несколько параметров.";
         }
-        return removeZerosAfterDecimalPoint(String.format
-                ("%.2f", (dto.num1().subtract(dto.num2()))));
+        return String.format("%.2f", (dto.num1().subtract(dto.num2())));
     }
 
     @Override
@@ -35,8 +33,7 @@ public class CalculatorServiceImpl implements CalculatorService {
         if (checkParameters(dto)) {
             return "Отсутствует один или несколько параметров.";
         }
-        return removeZerosAfterDecimalPoint(String.format
-                ("%.2f", (dto.num1().multiply(dto.num2()))));
+        return String.format("%.2f", (dto.num1().multiply(dto.num2())));
     }
 
     @Override
@@ -47,22 +44,13 @@ public class CalculatorServiceImpl implements CalculatorService {
         if (dto.num2().equals(BigDecimal.valueOf(0))) {
             throw new IllegalArgumentException("Делить на ноль нельзя !");
         }
-        return removeZerosAfterDecimalPoint(String.format
-                ("%.2f", (dto.num1().divide(dto.num2(), 2, RoundingMode.DOWN))));
+        return String.format("%.2f", (dto.num1().divide(dto.num2(), 2, RoundingMode.DOWN)));
     }
 
     public String binaryToString(String string) {
         return Arrays.stream(string.split(" ")).collect(StringBuilder::new,
                 (sb, c) -> sb.append((char) Integer.parseInt(c, 2)),
                 StringBuilder::append).toString();
-    }
-
-    private String removeZerosAfterDecimalPoint(String string) {
-        if (string.split(",")[1].split("")[0].equals("0")
-                && string.split(",")[1].split("")[1].equals("0")) {
-            return string.split(",")[0];
-        }
-        return string;
     }
 
     public boolean checkParameters(CalculatorDto dto) {
