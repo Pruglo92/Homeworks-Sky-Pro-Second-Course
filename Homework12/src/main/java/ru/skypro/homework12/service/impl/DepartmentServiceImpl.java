@@ -7,7 +7,10 @@ import ru.skypro.homework12.exceptions.employeeExceptions.EmployeeNotFoundExcept
 import ru.skypro.homework12.repository.EmployeeRepository;
 import ru.skypro.homework12.service.DepartmentService;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,13 +19,33 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private final EmployeeRepository employeeRepository;
 
-    public void getDepartmentSalary(Integer department) {        //сумма затрат на зарплату по отделу
-        var sum = employeeRepository.getEmployees().values().stream()
+    @Override   //сумма затрат на зарплату по отделу
+    public Integer getDepartmentSalary(final Integer department) {
+        return employeeRepository.getEmployees().values().stream()
                 .filter(Objects::nonNull)
-                .filter(x -> x.getDepartment() == department)
+                .filter(employee -> employee.getDepartment() == department)
                 .map(Employee::getSalary)
                 .reduce(0, Integer::sum);
-        System.out.println("Сумма затрат на зарплату по отделу: " + sum);
+    }
+
+    @Override   //максимальная зарплата по отделу
+    public Integer getDepartmentMaxSalary(final Integer department) {
+        return employeeRepository.getEmployees().values().stream()
+                .filter(Objects::nonNull)
+                .filter(employee -> Objects.equals(employee.getDepartment(), department))
+                .map(Employee::getSalary)
+                .max(Comparator.comparingInt(value -> value))
+                .get();
+    }
+
+    @Override   //минимальная зарплата по отделу
+    public Integer getDepartmentMinSalary(final Integer department) {
+        return employeeRepository.getEmployees().values().stream()
+                .filter(Objects::nonNull)
+                .filter(employee -> Objects.equals(employee.getDepartment(), department))
+                .map(Employee::getSalary)
+                .min(Comparator.comparingInt(value -> value))
+                .get();
     }
 
     @Override   //сотрудник с минимальной зарплатой в отделе
