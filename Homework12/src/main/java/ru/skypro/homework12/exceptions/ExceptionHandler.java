@@ -3,6 +3,8 @@ package ru.skypro.homework12.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import ru.skypro.homework12.exceptions.departmentExceptions.DepartmentIntervalException;
+import ru.skypro.homework12.exceptions.departmentExceptions.DepartmentNotFoundException;
 import ru.skypro.homework12.exceptions.employeeExceptions.*;
 
 
@@ -48,6 +50,12 @@ public class ExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(EmployeeIncorrectLastNameException.class)
     public ResponseEntity<String> employeeIncorrectLastNameExceptionHandler(EmployeeIncorrectLastNameException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(e.getMessage());
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(DepartmentNotFoundException.class)
+    public ResponseEntity<String> departmentNotFoundExceptionHandler(DepartmentNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(e.getMessage());
     }
 }

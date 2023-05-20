@@ -3,11 +3,9 @@ package ru.skypro.homework12.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework12.entity.Employee;
-import ru.skypro.homework12.exceptions.employeeExceptions.EmployeeNotFoundException;
-import ru.skypro.homework12.repository.EmployeeRepository;
+import ru.skypro.homework12.exceptions.departmentExceptions.DepartmentNotFoundException;
 import ru.skypro.homework12.service.DepartmentService;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -17,11 +15,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DepartmentServiceImpl implements DepartmentService {
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeServiceImpl employeeService;
 
     @Override   //сумма затрат на зарплату по отделу
     public Integer getDepartmentSalary(final Integer department) {
-        return employeeRepository.getEmployees().values().stream()
+        return employeeService.getEmployees().values().stream()
                 .filter(Objects::nonNull)
                 .filter(employee -> employee.getDepartment() == department)
                 .map(Employee::getSalary)
@@ -30,50 +28,30 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override   //максимальная зарплата по отделу
     public Integer getDepartmentMaxSalary(final Integer department) {
-        return employeeRepository.getEmployees().values().stream()
+        return employeeService.getEmployees().values().stream()
                 .filter(Objects::nonNull)
                 .filter(employee -> Objects.equals(employee.getDepartment(), department))
-                .map(Employee::getSalary)
-                .max(Comparator.comparingInt(value -> value))
-                .get();
+                .mapToInt(Employee::getSalary)
+                .max()
+                .orElseThrow(() -> new DepartmentNotFoundException("Отсутствуют сотрудники в данном отделе"));
     }
 
     @Override   //минимальная зарплата по отделу
     public Integer getDepartmentMinSalary(final Integer department) {
-        return employeeRepository.getEmployees().values().stream()
+        return employeeService.getEmployees().values().stream()
                 .filter(Objects::nonNull)
                 .filter(employee -> Objects.equals(employee.getDepartment(), department))
-                .map(Employee::getSalary)
-                .min(Comparator.comparingInt(value -> value))
-                .get();
-    }
-
-    @Override   //сотрудник с минимальной зарплатой в отделе
-    public Employee getEmployeeWithMinSalary(final Integer department) {
-        return employeeRepository.getEmployees().values().stream()
-                .filter(employee -> employee != null && department.equals(employee.getDepartment()))
-                .min(Comparator.comparing(Employee::getSalary))
-                .stream()
-                .findAny()
-                .orElseThrow(() -> new EmployeeNotFoundException("Данный сотрудник не найден."));
-    }
-
-    @Override   //сотрудник с максимальной зарплатой в отделе
-    public Employee getEmployeeWithMaxSalary(final Integer department) {
-        return employeeRepository.getEmployees().values().stream()
-                .filter(employee -> employee != null && department.equals(employee.getDepartment()))
-                .max(Comparator.comparing(Employee::getSalary))
-                .stream()
-                .findAny()
-                .orElseThrow(() -> new EmployeeNotFoundException("Данный сотрудник не найден."));
+                .mapToInt(Employee::getSalary)
+                .min()
+                .orElseThrow(() -> new DepartmentNotFoundException("Отсутствуют сотрудники в данном отделе"));
     }
 
     @Override   //Все сотрудники отдела
-    public Map<Integer, List<Employee>> getAllEmployeesOfTheDepartment(final Integer department) {
-        return employeeRepository.getEmployees().values().stream()
+    public List<Employee> getAllEmployeesOfTheDepartment(final Integer department) {
+        return employeeService.getEmployees().values().stream()
                 .filter(Objects::nonNull)
                 .filter(employee -> employee.getDepartment() == department)
-                .collect(Collectors.groupingBy(Employee::getDepartment));
+                .toList();
     }
 
     /**
@@ -83,7 +61,7 @@ public class DepartmentServiceImpl implements DepartmentService {
      */
     @Override
     public Map<Integer, List<Employee>> getAllEmployeesByAllDepartment() {
-        return employeeRepository.getEmployees().values().stream()
+        return employeeService.getEmployees().values().stream()
                 .filter(Objects::nonNull)
                 .collect(Collectors.groupingBy(Employee::getDepartment));
     }

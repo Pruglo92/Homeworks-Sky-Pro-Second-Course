@@ -1,23 +1,22 @@
 package ru.skypro.homework12.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework12.entity.Employee;
 import ru.skypro.homework12.exceptions.employeeExceptions.*;
-import ru.skypro.homework12.repository.EmployeeRepository;
 import ru.skypro.homework12.service.EmployeeService;
 
+import java.util.HashMap;
 import java.util.Map;
-
+@Getter
 @Service
-@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeRepository employeeRepository;
-    @Value("${very.important.constant}")
-    private Integer SIZE_MAP; //допустим, что наша мапа имеет ограниченный размер.
+
+    private final Map<Integer, Employee> employees = new HashMap<>();
+
+    private final Integer SIZE_MAP = 10; //допустим, что наша мапа имеет ограниченный размер.
 
     @Override   // добавляем сотрудника
     public Employee addEmployee(final String firstName, final String lastName,
@@ -30,21 +29,21 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         var employee = new Employee(StringUtils.capitalize(firstName.trim().toLowerCase()),
                 StringUtils.capitalize(lastName.trim().toLowerCase()), department, salary);
-        if (employeeRepository.getEmployees().containsValue(employee)) {
+        if (employees.containsValue(employee)) {
             throw new EmployeeAlreadyAddedException("Данный сотрудник уже добавлен.");
         }
-        if (employeeRepository.getEmployees().size() >= SIZE_MAP) {
+        if (employees.size() >= SIZE_MAP) {
             throw new EmployeeStorageIsFullException("Отсутствует место для добавления нового сотрудника.");
         }
-        employeeRepository.getEmployees().put(employee.getId(), employee);
+        employees.put(employee.getId(), employee);
         return employee;
     }
 
     @Override   //находим сотрудника
     public Employee getEmployee(final String firstName, final String lastName) {
-        return employeeRepository.getEmployees().values().stream()
-                .filter(e -> firstName.equalsIgnoreCase(e.getFirstName()) &&
-                        lastName.equalsIgnoreCase(e.getLastName()))
+        return employees.values().stream()
+                .filter(employee -> firstName.equalsIgnoreCase(employee.getFirstName()) &&
+                        lastName.equalsIgnoreCase(employee.getLastName()))
                 .findAny()
                 .orElseThrow(() -> new EmployeeNotFoundException("Данный сотрудник не найден."));
 
@@ -55,25 +54,25 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() -> new EmployeeNotFoundException("Данный сотрудник не найден."));*/
     }
 
-    @Override
+    @Override   //удаляем сотрудника по имени и фамилии
     public Employee deleteEmployee(final String firstName, final String lastName) {
-        var employee = employeeRepository.getEmployees().values().stream()
+        var employee = employees.values().stream()
                 .filter(e -> firstName.equalsIgnoreCase(e.getFirstName()) &&
                         lastName.equalsIgnoreCase(e.getLastName()))
                 .findAny()
                 .orElseThrow(() -> new EmployeeNotFoundException("Данный сотрудник не найден."));
 
-        return employeeRepository.getEmployees().remove(employee.getId());
-
+        return employees.remove(employee.getId());
+    }
         //если бы мы находили сотрудника по всем параметрам
 /*        var employee = EmployeeRepository.employees.values().stream()
                 .filter(new Employee(firstName, lastName, department, salary)::equals)
                 .findAny()
                 .orElseThrow(() -> new EmployeeNotFoundException("Данный сотрудник не найден."));*/
-    }
+  //  }
 
-    @Override
+    @Override   //получаем всех сотрудников
     public Map<Integer, Employee> getAllEmployee() {
-        return employeeRepository.getEmployees();
+        return employees;
     }
 }

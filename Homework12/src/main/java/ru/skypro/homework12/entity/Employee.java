@@ -1,7 +1,7 @@
 package ru.skypro.homework12.entity;
 
 
-import ru.skypro.homework12.exceptions.DepartmentIntervalException;
+import ru.skypro.homework12.exceptions.departmentExceptions.DepartmentIntervalException;
 import ru.skypro.homework12.exceptions.SalaryNegativeException;
 
 import java.util.Objects;
@@ -87,11 +87,11 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return id == employee.id && firstName.equals(employee.firstName) && lastName.equals(employee.lastName) && department.equals(employee.department) && salary.equals(employee.salary);
+        return firstName.equals(employee.firstName) && lastName.equals(employee.lastName) && department.equals(employee.department) && salary.equals(employee.salary);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, department, salary, id);
+        return Objects.hash(firstName, lastName, department, salary);
     }
 }
